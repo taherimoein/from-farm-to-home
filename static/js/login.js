@@ -6,19 +6,15 @@ function validateUser(evt) {
     
     // var loginInfo = $("#login").serialize();
 
-    $.post('/login', $("#login").serialize(), function(result) {
+    $.post('signin/', $("#login").serialize(), function(result) {
 
         if (result === "Fail") {
             $('#login-fail').html("Incorrect username or password");
-        } else if (result === "CookieFail") {
-            $('#login-fail').html("Please enable cookies to log in");
         } else {
             $('#LoginModal').modal('hide');
-            $('#loginNav').attr('src', '/logout').html('Log Out');
+            $('#loginNav').attr('src', 'signout/').html('Log Out');
         }
     })
-
-    
 }
 
 //login form event binding
