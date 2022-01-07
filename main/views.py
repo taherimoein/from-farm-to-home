@@ -147,14 +147,20 @@ def cart(request):
         product_id = request.POST.get('id')
         productObj = Product.objects.get(id=product_id)
 
-        OrderDetailsObj = OrderDetails.objects.create(product=productObj,price=productObj.price,count=1)
         userObj = request.user
         if not Order.objects.filter(user=userObj,status=False).exists():
             OrderObj = Order.objects.create(user=userObj,email=userObj.email,address=userObj.address,zipcode=userObj.zipcode)
         else:
             OrderObj = Order.objects.get(user=userObj,status=False)
         # add items
-        OrderObj.items.add(OrderDetailsObj)
+        if OrderObj.items.filter(product=productObj).exists():
+            OrderDetailsObj = OrderObj.items.get(product=productObj)
+            OrderDetailsObj.count += 1
+            OrderDetailsObj.save()
+        else:
+            OrderDetailsObj = OrderDetails.objects.create(product=productObj,price=productObj.price,count=1)
+            OrderObj.items.add(OrderDetailsObj)
+            
         totalPrice = 0
         for item in OrderObj.items.all():
             totalPrice += item.price
