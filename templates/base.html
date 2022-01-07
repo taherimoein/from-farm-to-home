@@ -65,7 +65,7 @@
             <h4 class="modal-title">Log In</h4>
           </div>
           <div class="modal-body">
-            <form id="login" action="{% url 'main:signin' %}" method="POST">
+            <form >
                 <label for="email">Email</label>
                 <input type="email" name="email" id="email" required>
                 <label for="password">Password</label>
@@ -97,7 +97,7 @@
 <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
 <script>
-    $(".submit").click(function (e) {
+    $("#submit").click(function (e) {
     e.preventDefault();
 
         var this_email = $('#email').val();
@@ -118,12 +118,17 @@
             success: function(json)
             {
 
-              console.log(json.status);
+              console.log(json);
               if(json.status == '200'){
                 alert('successfully')
+                redirectURL = "{% url 'main:indexpage' %}";
+                setTimeout ( function () {
+                    window.location = redirectURL;
+                }, 1000)
               }
               else{
-                alert('successfully')
+                console.log('skncvjks');
+                alert('email or password is incorrect')
               }
                 
             },
