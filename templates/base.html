@@ -73,7 +73,7 @@
                 <p id="login-fail"></p>
                 <p>Not a member? <a href="{% url 'main:register' %}">Register now!</a></p>
                 <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-                <button type="button submit" form="login" class="btn btn-primary">Enter</button>
+                <button id="submit" form="login" class="btn btn-primary">Enter</button>
             </form>
           </div>
         </div><!-- /.modal-content -->
@@ -95,5 +95,46 @@
     </div>
 
 <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+<script>
+    $(".submit").click(function (e) {
+    e.preventDefault();
+
+        var this_email = $('#email').val();
+        var this_pass = $('#password').val();
+
+        var formData = new FormData();
+
+        formData.append('email', this_email);
+        formData.append('password', this_pass);
+
+        $.ajax({
+            type:"POST",
+            url:'{% url "main:signin" %}',
+            data: formData,
+            processData: false,
+            contentType: false,
+            headers: { "X-CSRFToken": '{{csrf_token}}' },
+            success: function(json)
+            {
+
+              console.log(json.status);
+              if(json.status == '200'){
+                alert('successfully')
+              }
+              else{
+                alert('successfully')
+              }
+                
+            },
+            error: function (json, status, xhr) {
+                console.log(json)
+            }
+        });
+    
+})
+</script>
+
+
 </body>
 </html>
