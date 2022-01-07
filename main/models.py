@@ -91,7 +91,7 @@ class Icon(models.Model):
 
 class Category(models.Model):
     title = models.CharField(verbose_name='عنوان',max_length=255,db_index=True)
-    fk_parent = models.ForeignKey('self',verbose_name='سر دسته',related_name='category_parent',on_delete=models.SET_NULL, null=True)
+    fk_parent = models.ForeignKey('self',verbose_name='سر دسته',related_name='category_parent',on_delete=models.SET_NULL, null=True,blank=True)
 
     def __str__(self):
         return "{}".format(self.title)
