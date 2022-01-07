@@ -28,4 +28,42 @@
     <div class="row">
         <a href="{% url 'main:products' %}" class="backtoall">Back to All Products</a>
     </div>
+
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+<script>
+    $(".add_to_cart").click(function (e) {
+    e.preventDefault();
+
+        var this_id = this.id;
+
+        var formData = new FormData();
+
+        formData.append('id', this_id);
+
+        $.ajax({
+            type:"POST",
+            url:'{% url "main:cart" %}',
+            data: formData,
+            processData: false,
+            contentType: false,
+            headers: { "X-CSRFToken": '{{csrf_token}}' },
+            success: function(json)
+            {
+                alert('added to cart')
+                redirectURL = "/cart/";
+                setTimeout ( function () {
+                    window.location = redirectURL;
+                }, 1000)
+                
+            },
+            error: function (json, status, xhr) {
+                console.log(json)
+                // $('.error-text').html(json.responseJSON.non_field_errors[0]);
+                $('.error-message').show();
+                $('.loading').fadeOut('slow');
+            }
+        });
+    
+})
+</script>
 {% endblock %}
