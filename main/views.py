@@ -3,7 +3,7 @@ from django.views.decorators.http import require_http_methods
 from django.contrib.auth import authenticate, login, logout
 from django.views.decorators.csrf import csrf_exempt
 from django.http import JsonResponse
-import json
+import json,datetime
 # get model
 from main.models import User,Product,Order,OrderDetails
 
@@ -129,6 +129,7 @@ def account(request):
     return render(request,'account.html',context)
 
 
+@csrf_exempt
 def cart(request):
     if request.method == 'GET':
         # get order
@@ -160,7 +161,7 @@ def cart(request):
         else:
             OrderDetailsObj = OrderDetails.objects.create(product=productObj,price=productObj.price,count=1)
             OrderObj.items.add(OrderDetailsObj)
-            
+
         totalPrice = 0
         for item in OrderObj.items.all():
             totalPrice += item.price
@@ -170,3 +171,21 @@ def cart(request):
         response_data['status'] = '200'
         return JsonResponse(response_data)
 
+
+@csrf_exempt
+def checkout(request):
+    if request.method == 'GET':
+        return render(request,'success.html')
+    elif request.method == 'POST':
+        response_data = {}
+        payment_type = request.POST.get('payment_type')
+
+        userObj = request.user
+        if Order.objects.filter(user=userObj,status=False).exists():
+            OrderObj = Order.objects.get(user=userObj,status=False)
+            OrderObj.payment_type = payment_type
+            OrderObj.status = True
+            OrderObj.save()
+
+        response_data['status'] = '200'
+        return JsonResponse(response_data)
