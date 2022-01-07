@@ -150,7 +150,6 @@ class OrderDetails(models.Model):
 
 class Order(models.Model):
     user = models.ForeignKey(User,verbose_name='کاربر',related_name='order_user',on_delete=models.SET_NULL, null=True)
-    description=models.TextField(verbose_name='توضیحات',null=True,blank=True)
     email = models.EmailField(verbose_name='ایمیل')
     address = models.TextField(verbose_name='آدرس')
     zipcode = models.CharField(verbose_name='کد پستی',max_length=10)
