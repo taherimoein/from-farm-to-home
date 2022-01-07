@@ -44,9 +44,9 @@ def signin(request):
 
             return redirect('main:indexpage')
         else:
-            return 'Fail'
+            return redirect('main:indexpage')
     except Exception as e:
-        return 'Fail'
+        return redirect('main:indexpage')
 
 
 @csrf_exempt
