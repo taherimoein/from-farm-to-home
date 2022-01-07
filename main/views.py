@@ -42,11 +42,14 @@ def signin(request):
             # login user
             login(request, user)
 
-            return redirect('main:indexpage')
+            response_data['status'] = '200'
+            return JsonResponse(response_data)
         else:
-            return redirect('main:indexpage')
+            response_data['status'] = '404'
+            return JsonResponse(response_data)
     except Exception as e:
-        return redirect('main:indexpage')
+        response_data['status'] = '500'
+        return JsonResponse(response_data)
 
 
 @csrf_exempt

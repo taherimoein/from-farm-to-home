@@ -54,29 +54,7 @@
 <div class="spacer"></div>
 <div class="spacer"></div>
 
-<div class="row">
 
-<!-- <h2>Recipe Suggestions</h2> -->
-
-<!-- <p>Don't know what you're making for dinner tonight? We've got suggestions!</p> -->
-
-</div>
-
-<div class="row">
-
-{.% raw %}
-<div ng-controller="RecipeController">
-<div class="col-md-3" ng-repeat="recipe in recipes">  <!-- recipe in recipeCtrl.recipes track by $index -->
-    <a ng-href="#"><img ng-src="#"></a>
-    <a ng-href="#" class="recipetitle"><h4>recipe.name</h4></a>
-    <p><a href ng-click="saveRecipe(recipe)" aria-label="Like this recipe" class="recipea"><span class="glyphicon glyphicon-heart likerecipe" aria-hidden="true"></span></a></p>
-</div>
-</div>
-{.% endraw %}
-
-</div>
-
-<!-- <p>Please log in before placing your order. Not a member? <a href="/register">Register now!</a></p> -->
 
 <script type="text/javascript" src="static/js/angularcart.js"></script>
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
@@ -102,7 +80,7 @@
             {
                 console.log(json);
                 alert('successfully')
-                redirectURL = "/checkout/";
+                redirectURL = "{% url 'main:checkout' %}";
                 setTimeout ( function () {
                     window.location = redirectURL;
                 }, 1000)
