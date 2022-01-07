@@ -12,33 +12,25 @@
 
 <h1 class="centerme">Shopping Cart</h1>
 
-<table class="table table-hover"> <!-- id="cart-table" -->
+<table class="table table-hover">
     <thead>
         <tr>
-            <th>Quantity</th>
-            <th>Product</th>
-            <th>Subtotal</th>
-            <th></th>
+            <th>Title</th>
+            <th>Count</th>
+            <th>Price</th>
         </tr>
     </thead>
     <tbody>
-        {.% for item in  %}
+        {% for item in OrderObj.items.all %}
                 <tr ng-repeat="product in cart">
-                    <td>
-                        <select ng-model="product.qty" ng-options="option for option in dropdownOptions" ng-change="updateCart(product)"></select>
-                    </td>
-
+                    <td>{{item.product.title}}</td>
+                    <td>{{item.count}}</td>
+                    <td>{{item.price}}</td>
                 </tr>
-        {.% endfor %}
+        {% endfor %}
     </tbody>
-
 </table>
 
-<script type="text/javascript" src="/static/js/cart.js"></script>
-{.% raw %}
-
-<p>Weight: <span ng-if="cartWeight.fudged">Over </span> oz.</p>
-{.% endraw %}
 </div>
 
 <div class="col-md-5">

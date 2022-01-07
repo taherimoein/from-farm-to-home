@@ -155,12 +155,13 @@ class Order(models.Model):
     address = models.TextField(verbose_name='آدرس')
     zipcode = models.CharField(verbose_name='کد پستی',max_length=10)
     items = models.ManyToManyField(OrderDetails,verbose_name='جزئیات سفارش',related_name='order_details',blank=True)
-    total_price=models.BigIntegerField(verbose_name='هزینه کل')
+    total_price=models.BigIntegerField(verbose_name='هزینه کل',default=0)
     PAYMENT_TYPE =(
         ('in-place','پرداخت در محل'),
         ('online','پرداخت آنلاین')
     )
-    payment_type=models.CharField(verbose_name='نوع پرداخت', max_length=8,choices=PAYMENT_TYPE)
+    payment_type=models.CharField(verbose_name='نوع پرداخت', max_length=8,choices=PAYMENT_TYPE,default='online')
+    status = models.BooleanField(verbose_name='وضعیت',default=False)
     order_date=models.DateField(verbose_name='تاریخ خرید',auto_now_add=True)
 
     def __str__(self):
