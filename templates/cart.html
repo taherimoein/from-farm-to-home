@@ -85,19 +85,15 @@
     e.preventDefault();
     // check fields
 
-        var formData = new FormData();
-
-        $('input[name="pay"]:checked').val();
+    
+        var payment_type = $('input[name="pay"]:checked').val();
         
         var csrf_token = $("input[name=csrfmiddlewaretoken]").val()
-
-
-        formData.append('title', title);
-        formData.append('slug', slug);
-
+        var formData = new FormData();
+        formData.append('payment_type', payment_type);
         $.ajax({
             type:"POST",
-            url:'{% url "main:category_create_api" %}',
+            url:'{% url "main:checkout" %}',
             data: formData,
             processData: false,
             contentType: false,
@@ -105,9 +101,8 @@
             success: function(json)
             {
                 console.log(json);
-                $('.success-message').show();
-                $('.loading').fadeOut('slow');
-                redirectURL = "{{BASE_URL}}/dashboard/";
+                alert('successfully')
+                redirectURL = "/checkout/";
                 setTimeout ( function () {
                     window.location = redirectURL;
                 }, 1000)
@@ -115,9 +110,6 @@
             },
             error: function (json, status, xhr) {
                 console.log(json)
-                // $('.error-text').html(json.responseJSON.non_field_errors[0]);
-                $('.error-message').show();
-                $('.loading').fadeOut('slow');
             }
         });
     
