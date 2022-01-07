@@ -5,7 +5,7 @@ from django.views.decorators.csrf import csrf_exempt
 from django.http import JsonResponse
 import json
 # get model
-from main.models import User,Product
+from main.models import User,Product,Order,OrderDetails
 
 # -----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
@@ -130,10 +130,37 @@ def account(request):
 
 
 def cart(request):
+    if request.method == 'GET':
+        # get order
+        if Order.objects.filter(user=request.user,status=False).exists():
+            OrderObj = Order.objects.get(user=request.user,status=False)
 
+            context = {
+                'OrderObj': OrderObj
+            }
+            return render(request,'cart.html',context)
+        else:
+            return render(request,'index.html')
+    elif request.method == 'POST':
+        response_data = {}
+        # get product
+        product_id = request.POST.get('id')
+        productObj = Product.objects.get(id=product_id)
 
-    context = {
+        OrderDetailsObj = OrderDetails.objects.create(product=productObj,price=productObj.price,count=1)
+        userObj = request.user
+        if not Order.objects.filter(user=userObj,status=False).exists():
+            OrderObj = Order.objects.create(user=userObj,email=userObj.email,address=userObj.address,zipcode=userObj.zipcode)
+        else:
+            OrderObj = Order.objects.get(user=userObj,status=False)
+        # add items
+        OrderObj.items.add(OrderDetailsObj)
+        totalPrice = 0
+        for item in OrderObj.items.all():
+            totalPrice += item.price
+        OrderObj.total_price = totalPrice
+        OrderObj.save()
 
-    }
-    return render(request,'cart.html',context)
+        response_data['status'] = '200'
+        return JsonResponse(response_data)
 
